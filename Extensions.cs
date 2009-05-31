@@ -4,7 +4,7 @@ namespace Reactive
 {
     public static class Extensions
     {
-        public static IObservable<TResult> AsObservable<TInput, TResult>(this Func<TInput,TResult> funcToObserve,TInput input)
+        public static IObservable<TResult> AsAsyncObservable<TInput, TResult>(this Func<TInput,TResult> funcToObserve,TInput input)
         {
             return new AsyncWrapper<TInput, TResult>(funcToObserve, input);
         }
@@ -19,11 +19,44 @@ namespace Reactive
             return new SelectManyObservable<TSource, TCollection, TResult>(source, collectionSelector, resultSelector);
         }
 
+        public static IObservable<T> Where<T>(this IObservable<T> source, Func<T, bool> predicate)
+        {
+            return new WhereObservable<T>(source, predicate);
+        }
+
+
+        //private static Func<T, IObservable<TResult>> Convert<T, TResult>(Func<T, TResult> selector)
+        //{
+        //    return t => 
+        //}
+
+
         //public static TResult Select<T, TResult>(this IObserver<T> observer, Func<IObserver<T>, TResult> func)
         //{
         //    return default(TResult);
         //}
 
+    }
+
+    public class WhereObservable<T> : IObservable<T>
+    {
+        private readonly IObservable<T> _source;
+        private readonly Func<T, bool> _predicate;
+
+        public WhereObservable(IObservable<T> source, Func<T, bool> predicate)
+        {
+            _source = source;
+            _predicate = predicate;
+        }
+
+        public void Attach(Action<T> action)
+        {
+            _source.Attach(t =>
+                               {
+                                   if (_predicate(t))
+                                       action(t);
+                               });
+        }
     }
 
     public class SelectManyObservable<TSource, TCollection, TResult> : IObservable<TResult>
@@ -41,7 +74,11 @@ namespace Reactive
 
         public void Attach(Action<TResult> action)
         {
-            _source.Attach(s => _collectionSelector(s).Attach(c => action(_resultSelector(s, c))));            
+            _source.Attach(
+                s => _collectionSelector(s).Attach(
+                    c => action(_resultSelector(s, c))
+                )
+            );            
         }
     }
 }
