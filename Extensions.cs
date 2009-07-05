@@ -51,11 +51,7 @@ namespace Reactive
 
         public void Attach(Action<T> action)
         {
-            _source.Attach(t =>
-                               {
-                                   if (_predicate(t))
-                                       action(t);
-                               });
+            _source.Attach(t => { if (_predicate(t)) action(t); });
         }
     }
 

@@ -23,7 +23,7 @@ namespace Reactive
 
             IObservable<int> observable = from md in button1.GetMouseDowns()
                                           where md.EventArgs.Button == MouseButtons.Right
-                                          from x in slowOperation.AsAsyncObservable(md.EventArgs)                                            
+                                          from x in slowOperation.AsAsyncObservable(md.EventArgs)                                          
                                           select x;
                                           
 
