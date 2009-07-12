@@ -17,7 +17,12 @@ namespace Reactive
 
         public IDisposable Subscribe(IObserver<TResult> observer)
         {
-            var selectManyObserver = ObserverBuilder.Create(observer, (TSource t) => _collectionSelector(t).Subscribe(ObserverBuilder.Create(observer, (TCollection col) => observer.OnNext(_resultSelector(t, col)))));
+            var selectManyObserver = ObserverBuilder.Create(observer, (TSource t) =>
+                                                            _collectionSelector(t).Subscribe(
+                                                                ObserverBuilder.Create(observer,
+                                                                                       (TCollection col) =>
+                                                                                       observer.OnNext(_resultSelector(
+                                                                                                           t, col)))));
             return _source.Subscribe(selectManyObserver);
         }
     }
