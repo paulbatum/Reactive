@@ -6,8 +6,7 @@ namespace Reactive
     {
         public static IObservable<TResult> Select<T, TResult>(this IObservable<T> observable, Func<T, TResult> func)
         {
-            return new SelectObservable<T, TResult>(observable, func);
-            //return ObservableBuilder.Create((IObserver<TResult> observer) => observable.Subscribe(ObserverBuilder.Create(observer, (T a) => observer.OnNext(func(a)))));
+            return new SelectObservable<T, TResult>(observable, func);            
         }
 
         public static IObservable<TResult> SelectMany<TSource, TCollection, TResult>(this IObservable<TSource> source, Func<TSource, IObservable<TCollection>> collectionSelector, Func<TSource, TCollection, TResult> resultSelector)

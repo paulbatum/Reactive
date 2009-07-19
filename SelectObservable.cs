@@ -19,27 +19,4 @@ namespace Reactive
         }
     }
 
-    //public class ObservableBuilder
-    //{
-    //    public static IObservable<T> Create<T>(Func<IObserver<T>, IDisposable> subscribe)
-    //    {
-    //        return new ObservableWrapper<T>(subscribe);
-    //    }
-
-    //    private class ObservableWrapper<T> : IObservable<T>
-    //    {
-    //        private readonly Func<IObserver<T>, IDisposable> _subscribe;
-
-    //        public ObservableWrapper(Func<IObserver<T>, IDisposable> subscribe)
-    //        {
-    //            _subscribe = subscribe;
-    //        }
-
-    //        public IDisposable Subscribe(IObserver<T> observer)
-    //        {
-    //            return _subscribe(observer);
-    //        }
-    //    }
-    //}
-
 }

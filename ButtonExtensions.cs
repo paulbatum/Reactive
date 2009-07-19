@@ -4,10 +4,10 @@ namespace Reactive
 {
     public static class ButtonExtensions
     {
-        public static IObservable<MouseEventArgs> GetMouseDowns(this Button b)
+        public static IObservable<MouseEventArgs> GetMouseDowns(this Button button)
         {
             var wrapper = new EventWrapper<MouseEventArgs>();
-            b.MouseDown += wrapper.Handle;
+            button.MouseDown += wrapper.Handler;
             return wrapper;
         }
     }

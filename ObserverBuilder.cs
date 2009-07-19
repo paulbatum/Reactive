@@ -20,9 +20,9 @@ namespace Reactive
                 _onNext = onNext;
             }
 
-            public void OnNext(T2 t)
+            public void OnNext(T2 item)
             {
-                _onNext(t);
+                _onNext(item);
             }
 
             public void OnDone()

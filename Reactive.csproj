@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="IObservable.cs" />
     <Compile Include="ObserverBuilder.cs" />
+    <Compile Include="ObserverCollection.cs" />
     <Compile Include="SelectManyObservable.cs" />
     <Compile Include="SelectObservable.cs" />
     <Compile Include="Program.cs" />

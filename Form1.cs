@@ -15,18 +15,23 @@ namespace Reactive
         {
             InitializeComponent();
 
-            Func<MouseEventArgs, int> slowOperation = args =>
-            {
-                System.Threading.Thread.Sleep(3000);
-                if(args.Button == MouseButtons.Middle)
-                    throw new Exception("MIDDLE BUTTON NOT ALLOWED!!!");
-                return args.X;
-            };
+            //Func<MouseEventArgs, int> slowOperation = args =>
+            //{
+            //    System.Threading.Thread.Sleep(3000);
+            //    if(args.Button == MouseButtons.Middle)
+            //        throw new Exception("MIDDLE BUTTON NOT ALLOWED!!!");
+            //    return args.X;
+            //};
 
-            IObservable<string> messages = from md in button1.GetMouseDowns()                                           
-                                           from x in slowOperation.AsAsyncObservable(md)
-                                           where md.Button == MouseButtons.Right
-                                           select "Mouse down: " + x + "\n";
+            //IObservable<string> messages = from md in button1.GetMouseDowns()                                           
+            //                               from x in slowOperation.AsAsyncObservable(md)
+            //                               where md.Button == MouseButtons.Right
+            //                               select "Mouse down: " + x + "\n";
+
+            IObservable<MouseEventArgs> mouseEvents = button1.GetMouseDowns();
+
+            IObservable<string> messages = from md in mouseEvents
+                                           select "Mouse down at: " + md.X + "\n";
 
             messages.Subscribe(new TextBoxUpdater(textBox1));
         }
@@ -40,7 +45,7 @@ namespace Reactive
                 _textBox = textBox;
             }
 
-            private void SetText(string text)
+            private void AppendText(string text)
             {
                 Action textboxUpdater = () => _textBox.AppendText(text);
                 _textBox.BeginInvoke(textboxUpdater);
@@ -48,17 +53,17 @@ namespace Reactive
 
             public void OnNext(string s)
             {
-                SetText(s);
+                AppendText(s);
             }
 
             public void OnDone()
             {
-                SetText("Done\n");
+                AppendText("Done\n");
             }
 
             public void OnError(Exception e)
             {
-                SetText("Error: " + e.Message);
+                AppendText("Error: " + e.Message);
             }
         }
 

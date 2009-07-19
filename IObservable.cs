@@ -9,7 +9,7 @@ namespace Reactive
 
     public interface IObserver<T>
     {        
-        void OnNext(T t);
+        void OnNext(T item);
         void OnDone();
         void OnError(Exception e);
     }
@@ -23,9 +23,9 @@ namespace Reactive
             _action = action;
         }
 
-        public void OnNext(T t)
+        public void OnNext(T item)
         {
-            _action(t);
+            _action(item);
         }
 
 
